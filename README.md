@@ -36,6 +36,12 @@ npm test
 npm run build
 ```
 
+## Project Maintenance
+
+- See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, validation order, and contribution hygiene.
+- See [SECURITY.md](SECURITY.md) for supported security reporting scope and private disclosure guidance.
+- See [SUPPORT.md](SUPPORT.md) for usage questions, bug reports, feature proposals, and security routing.
+
 ## Architecture
 
 See [docs/architecture.md](docs/architecture.md) for the stdio transport boundary, local checkout
