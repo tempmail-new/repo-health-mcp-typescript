@@ -22,6 +22,23 @@ const clientSetupGuide = {
   ],
 } as const;
 
+const bugReportIssueForm = {
+  file: ".github/ISSUE_TEMPLATE/bug.yml",
+  supportLink: "[bug report issue form](.github/ISSUE_TEMPLATE/bug.yml)",
+  requiredText: [
+    "name: Bug report",
+    "Report a reproducible repo-health-mcp-typescript bug.",
+    "Follow SECURITY.md instead.",
+    "Repository summary output",
+    "Local path handling",
+    "MCP client setup",
+    "Validation workflow",
+    "Node.js version",
+    "Target checkout shape",
+    "Minimal public reproduction",
+  ],
+} as const;
+
 describe("project trust surfaces", () => {
   it("keeps root maintenance entry points linked from the README", async () => {
     const readme = await readFile("README.md", "utf8");
@@ -29,6 +46,21 @@ describe("project trust surfaces", () => {
     for (const surface of trustSurfaceLinks) {
       await expect(access(surface.file)).resolves.toBeUndefined();
       expect(readme).toContain(surface.link);
+    }
+  });
+});
+
+describe("GitHub issue intake", () => {
+  it("keeps reproducible bug reports routed through the issue form", async () => {
+    const [support, issueForm] = await Promise.all([
+      readFile("SUPPORT.md", "utf8"),
+      readFile(bugReportIssueForm.file, "utf8"),
+    ]);
+
+    expect(support).toContain(bugReportIssueForm.supportLink);
+
+    for (const requiredText of bugReportIssueForm.requiredText) {
+      expect(issueForm).toContain(requiredText);
     }
   });
 });

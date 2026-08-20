@@ -9,14 +9,16 @@ For local setup, validation, and development commands, start with [README.md](RE
 
 ## Bugs
 
-Open a GitHub issue for reproducible bugs in repository summary output, local path handling, package
-scripts, validation workflow, or documentation.
+Use the [bug report issue form](.github/ISSUE_TEMPLATE/bug.yml) for reproducible bugs in
+repository summary output, local path handling, MCP client setup, package scripts, validation
+workflow, or documentation.
 
 Please include:
 
 - Node.js version
 - operating system
 - command used
+- target checkout shape
 - expected and actual result
 - a minimal public reproduction when possible
 
