@@ -1,0 +1,97 @@
+name: Bug report
+description: Report a reproducible repo-health-mcp-typescript bug.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a reproducible bug.
+
+        Do not use this form for suspected vulnerabilities or secret exposure. Follow SECURITY.md instead.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What went wrong?
+      placeholder: The repo_health_summary tool reports...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      description: Pick the narrowest matching area.
+      options:
+        - Repository summary output
+        - Local path handling
+        - Package script detection
+        - MCP client setup
+        - Validation workflow
+        - Documentation
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      placeholder: "22.12.0"
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "Ubuntu 24.04, macOS 15, Windows 11"
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command or MCP client action
+      description: Include the exact command, client action, or tool call that reproduces the issue.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: checkout-shape
+    attributes:
+      label: Target checkout shape
+      description: Describe the inspected repository without sharing private code.
+      placeholder: "npm package with package-lock.json, dirty working tree, branch feature/example"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: What should have happened?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: What happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal public reproduction
+      description: Link a public reproduction or list the smallest repository shape that reproduces the bug.
+      placeholder: |
+        1. Create a repository with...
+        2. Run...
+        3. Observe...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or output
+      description: Paste only relevant output. Remove tokens, local secrets, and private repository contents.
+      render: text
+    validations:
+      required: false
