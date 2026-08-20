@@ -27,6 +27,8 @@ During development:
 npm run dev
 ```
 
+For MCP client configuration, see [docs/mcp-client-setup.md](docs/mcp-client-setup.md).
+
 ## Validation
 
 ```bash
