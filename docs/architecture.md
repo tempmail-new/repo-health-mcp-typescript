@@ -20,3 +20,6 @@ The summary is intentionally small:
 - an `ok` or `attention` health level with deterministic reasons
 
 This keeps the tool useful for an agent deciding where to start without pretending to replace a full CI run.
+
+See [repo-health-summary-contract.md](repo-health-summary-contract.md) for the dedicated public
+output contract with field-level semantics and the current health reason strings.

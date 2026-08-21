@@ -39,6 +39,32 @@ const bugReportIssueForm = {
   ],
 } as const;
 
+const summaryContract = {
+  file: "docs/repo-health-summary-contract.md",
+  link: "[docs/repo-health-summary-contract.md](docs/repo-health-summary-contract.md)",
+  architectureLink: "[repo-health-summary-contract.md](repo-health-summary-contract.md)",
+  requiredText: [
+    "# repo_health_summary Output Contract",
+    '"schemaVersion": "1"',
+    '"checkoutPath": "/resolved/real/path/to/target-repository"',
+    '"repositoryRoot": "/resolved/real/path/to/git-root"',
+    '"isRepository": true',
+    '"dirty": false',
+    '"expectedFiles"',
+    '"level": "ok"',
+    '"reasons": []',
+    "`repositoryRoot`, `git.branch`, `git.head`, `project.name`, and `project.packageManager` can be",
+    "`git.conflicted`",
+    "Count of porcelain status entries with merge-conflict statuses.",
+    "`health.level`",
+    '`"ok"` when there are no reasons, otherwise `"attention"`.',
+    "path is not inside a git repository",
+    "missing npm script: build",
+    "missing expected file: .github/workflows",
+    "Reason strings are sorted before they are returned",
+  ],
+} as const;
+
 describe("project trust surfaces", () => {
   it("keeps root maintenance entry points linked from the README", async () => {
     const readme = await readFile("README.md", "utf8");
@@ -46,6 +72,23 @@ describe("project trust surfaces", () => {
     for (const surface of trustSurfaceLinks) {
       await expect(access(surface.file)).resolves.toBeUndefined();
       expect(readme).toContain(surface.link);
+    }
+  });
+});
+
+describe("repo_health_summary contract docs", () => {
+  it("keeps the README and architecture docs linked to the output contract", async () => {
+    const [readme, architecture, contract] = await Promise.all([
+      readFile("README.md", "utf8"),
+      readFile("docs/architecture.md", "utf8"),
+      readFile(summaryContract.file, "utf8"),
+    ]);
+
+    expect(readme).toContain(summaryContract.link);
+    expect(architecture).toContain(summaryContract.architectureLink);
+
+    for (const requiredText of summaryContract.requiredText) {
+      expect(contract).toContain(requiredText);
     }
   });
 });
