@@ -13,6 +13,9 @@ TypeScript stdio MCP server for deterministic local repository health summaries.
 The tool reads local files and git metadata only. It does not install dependencies, call remote services,
 or mutate the target checkout.
 
+For the exact returned JSON shape and health semantics, see
+[docs/repo-health-summary-contract.md](docs/repo-health-summary-contract.md).
+
 ## Run
 
 ```bash
