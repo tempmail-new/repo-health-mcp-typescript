@@ -44,6 +44,8 @@ npm run build
 ## Project Maintenance
 
 - See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, validation order, and contribution hygiene.
+- See [docs/release-checklist.md](docs/release-checklist.md) for versioning, validation, package
+  dry-run, and tagging expectations.
 - See [SECURITY.md](SECURITY.md) for supported security reporting scope and private disclosure guidance.
 - See [SUPPORT.md](SUPPORT.md) for usage questions, bug reports, feature proposals, and security routing.
 
