@@ -88,6 +88,28 @@ const releaseChecklist = {
   ],
 } as const;
 
+const firstSummaryQuickstart = {
+  file: "docs/first-summary-quickstart.md",
+  link: "[docs/first-summary-quickstart.md](docs/first-summary-quickstart.md)",
+  requiredText: [
+    "# First Summary Quickstart",
+    "npm ci",
+    "npm run build",
+    "[mcp-client-setup.md](mcp-client-setup.md)",
+    "repo_health_summary",
+    '"checkoutPath": "/absolute/path/to/target-repository"',
+    '"level": "ok"',
+    '"reasons": []',
+    "For an `ok` repository, start with `project.scripts`",
+    '"level": "attention"',
+    "git working tree has uncommitted changes",
+    "missing npm script: build",
+    "For `attention`, read `health.reasons` first.",
+    "[repo-health-summary-contract.md](repo-health-summary-contract.md)",
+    "[../SUPPORT.md](../SUPPORT.md)",
+  ],
+} as const;
+
 describe("project trust surfaces", () => {
   it("keeps root maintenance entry points linked from the README", async () => {
     const readme = await readFile("README.md", "utf8");
@@ -110,6 +132,21 @@ describe("release checklist docs", () => {
 
     for (const requiredText of releaseChecklist.requiredText) {
       expect(checklist).toContain(requiredText);
+    }
+  });
+});
+
+describe("first summary quickstart docs", () => {
+  it("keeps the README linked to the first interpreted tool result path", async () => {
+    const [readme, quickstart] = await Promise.all([
+      readFile("README.md", "utf8"),
+      readFile(firstSummaryQuickstart.file, "utf8"),
+    ]);
+
+    expect(readme).toContain(firstSummaryQuickstart.link);
+
+    for (const requiredText of firstSummaryQuickstart.requiredText) {
+      expect(quickstart).toContain(requiredText);
     }
   });
 });
