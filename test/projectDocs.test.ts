@@ -65,6 +65,29 @@ const summaryContract = {
   ],
 } as const;
 
+const releaseChecklist = {
+  file: "docs/release-checklist.md",
+  link: "[docs/release-checklist.md](docs/release-checklist.md)",
+  requiredText: [
+    "# Release Checklist",
+    "Follow semantic versioning.",
+    "Use a patch version for documentation fixes, dependency maintenance, and behavior-preserving",
+    "Use a minor version for backward-compatible tool output additions or new documented MCP behavior.",
+    "Use a major version for breaking changes to the `repo_health_summary` input shape, output contract,",
+    "Confirm the branch is up to date with `origin/main`.",
+    "Update `package.json` and `package-lock.json` to the intended version.",
+    "release notes that call out user-visible changes, validation performed, and any migration",
+    "npm run fmt:check",
+    "npm run lint",
+    "npm test",
+    "npm run build",
+    "npm pack --dry-run",
+    "The dry-run package output should include `dist`, `README.md`, and `docs`.",
+    "Create tags only from the validated `main` commit:",
+    "git tag v0.1.1",
+  ],
+} as const;
+
 describe("project trust surfaces", () => {
   it("keeps root maintenance entry points linked from the README", async () => {
     const readme = await readFile("README.md", "utf8");
@@ -72,6 +95,21 @@ describe("project trust surfaces", () => {
     for (const surface of trustSurfaceLinks) {
       await expect(access(surface.file)).resolves.toBeUndefined();
       expect(readme).toContain(surface.link);
+    }
+  });
+});
+
+describe("release checklist docs", () => {
+  it("keeps the README linked to versioning and package validation expectations", async () => {
+    const [readme, checklist] = await Promise.all([
+      readFile("README.md", "utf8"),
+      readFile(releaseChecklist.file, "utf8"),
+    ]);
+
+    expect(readme).toContain(releaseChecklist.link);
+
+    for (const requiredText of releaseChecklist.requiredText) {
+      expect(checklist).toContain(requiredText);
     }
   });
 });
