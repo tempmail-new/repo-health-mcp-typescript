@@ -15,6 +15,8 @@ or mutate the target checkout.
 
 For the exact returned JSON shape and health semantics, see
 [docs/repo-health-summary-contract.md](docs/repo-health-summary-contract.md).
+For a shortest path from a built server to one interpreted result, see
+[docs/first-summary-quickstart.md](docs/first-summary-quickstart.md).
 
 ## Run
 
