@@ -1,0 +1,79 @@
+name: Health signal proposal
+description: Propose a focused repository-health signal for repo_health_summary.
+title: "[Signal]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for proposed `repo_health_summary` signals, not reproducible bugs.
+
+        A good proposal names the operator problem, the output shape, and a deterministic way to test it.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Adoption or debugging problem
+      description: What repository-health question should this signal help answer?
+      placeholder: Users cannot quickly tell whether...
+    validations:
+      required: true
+  - type: input
+    id: signal-name
+    attributes:
+      label: Proposed signal name
+      description: Use the shortest stable name that could appear in docs, output, or health reasons.
+      placeholder: release checklist presence
+    validations:
+      required: true
+  - type: dropdown
+    id: output-area
+    attributes:
+      label: Expected output area
+      description: Pick where the signal should most likely appear.
+      options:
+        - health.reasons
+        - expectedFiles
+        - project
+        - git
+        - new top-level field
+        - unsure
+    validations:
+      required: true
+  - type: textarea
+    id: output-shape
+    attributes:
+      label: Proposed output shape
+      description: Describe the exact field, reason text, or compatibility behavior users should see.
+      placeholder: |
+        Add `missing expected file: docs/release-checklist.md` to `health.reasons` when...
+        Keep existing schema fields backward-compatible by...
+    validations:
+      required: true
+  - type: textarea
+    id: deterministic-test
+    attributes:
+      label: Deterministic test case
+      description: Describe the smallest public fixture or repository shape that should prove the signal.
+      placeholder: |
+        Given a git repository with...
+        When repo_health_summary runs against it...
+        Then the result includes...
+    validations:
+      required: true
+  - type: textarea
+    id: false-positives
+    attributes:
+      label: False-positive or ecosystem risk
+      description: Which repository types, languages, or workflows could this signal misread?
+      placeholder: Non-Node repositories should not be marked unhealthy only because...
+    validations:
+      required: true
+  - type: textarea
+    id: docs
+    attributes:
+      label: Documentation impact
+      description: Which public docs should change if this signal lands?
+      placeholder: README, first-summary quickstart, output contract, or architecture notes
+    validations:
+      required: false
