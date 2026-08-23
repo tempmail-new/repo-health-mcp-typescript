@@ -39,6 +39,25 @@ const bugReportIssueForm = {
   ],
 } as const;
 
+const healthSignalProposalIssueForm = {
+  file: ".github/ISSUE_TEMPLATE/feature.yml",
+  supportLink: "[health signal proposal issue form](.github/ISSUE_TEMPLATE/feature.yml)",
+  requiredText: [
+    "name: Health signal proposal",
+    "Propose a focused repository-health signal for repo_health_summary.",
+    "Use this form for proposed `repo_health_summary` signals, not reproducible bugs.",
+    "Adoption or debugging problem",
+    "Proposed signal name",
+    "Expected output area",
+    "health.reasons",
+    "expectedFiles",
+    "Proposed output shape",
+    "Deterministic test case",
+    "False-positive or ecosystem risk",
+    "Documentation impact",
+  ],
+} as const;
+
 const summaryContract = {
   file: "docs/repo-health-summary-contract.md",
   link: "[docs/repo-health-summary-contract.md](docs/repo-health-summary-contract.md)",
@@ -178,6 +197,19 @@ describe("GitHub issue intake", () => {
     expect(support).toContain(bugReportIssueForm.supportLink);
 
     for (const requiredText of bugReportIssueForm.requiredText) {
+      expect(issueForm).toContain(requiredText);
+    }
+  });
+
+  it("keeps new health-signal proposals routed through the issue form", async () => {
+    const [support, issueForm] = await Promise.all([
+      readFile("SUPPORT.md", "utf8"),
+      readFile(healthSignalProposalIssueForm.file, "utf8"),
+    ]);
+
+    expect(support).toContain(healthSignalProposalIssueForm.supportLink);
+
+    for (const requiredText of healthSignalProposalIssueForm.requiredText) {
       expect(issueForm).toContain(requiredText);
     }
   });

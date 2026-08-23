@@ -24,8 +24,10 @@ Please include:
 
 ## Feature Proposals
 
-Open a focused issue for new repository-health signals. Describe the adoption or debugging problem,
-the proposed output shape, and how it can be tested deterministically.
+Use the [health signal proposal issue form](.github/ISSUE_TEMPLATE/feature.yml) for new
+repository-health signals. Describe the adoption or debugging problem, the proposed output shape,
+the deterministic test case, and any false-positive risk for specific languages or repository
+workflows.
 
 ## Security
 
