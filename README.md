@@ -7,7 +7,7 @@ TypeScript stdio MCP server for deterministic local repository health summaries.
 `repo_health_summary` accepts a local checkout directory and returns a compact JSON summary:
 
 - git repository root, branch, short commit, dirty state, and porcelain counts
-- project name, package manager, npm scripts, and expected repository files
+- project name, package manager, npm scripts, and expected repository files when available
 - health level plus deterministic reasons when the checkout needs attention
 
 The tool reads local files and git metadata only. It does not install dependencies, call remote services,

@@ -56,8 +56,8 @@ An `ok` result means the current checks found no missing baseline signals:
 }
 ```
 
-For an `ok` repository, start with `project.scripts` to identify the likely validation commands,
-then use `git.branch` and `git.head` to anchor any follow-up work to the inspected commit.
+For an `ok` repository, start with `git.branch` and `git.head` to anchor any follow-up work to the
+inspected commit. When `project.scripts` is present, use it to identify likely validation commands.
 
 ## Read An `attention` Result
 
@@ -80,15 +80,14 @@ An `attention` result means at least one deterministic reason needs review:
     "level": "attention",
     "reasons": [
       "git working tree has uncommitted changes",
-      "missing npm script: build",
-      "missing npm script: lint"
+      "missing expected file: .github/workflows"
     ]
   }
 }
 ```
 
 For `attention`, read `health.reasons` first. Dirty or conflicted git signals tell you to inspect
-the working tree before changing files. Missing script or expected-file reasons tell you which
+the working tree before changing files. Missing expected-file reasons tell you which generic
 repository baseline is absent before relying on validation output.
 
 ## Jump Next

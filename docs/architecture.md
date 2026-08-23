@@ -15,11 +15,17 @@
 The summary is intentionally small:
 
 - git repository detection, branch, short commit, and porcelain working-tree counts
-- project metadata from `package.json`
-- expected repository files for README, license, package metadata, TypeScript config, and CI workflows
+- optional project metadata from `package.json`
+- expected repository-file presence checks for README, license, package metadata, TypeScript config,
+  and CI workflows
 - an `ok` or `attention` health level with deterministic reasons
 
-This keeps the tool useful for an agent deciding where to start without pretending to replace a full CI run.
+Only repository-generic risks drive the health level: not being inside git, no commit, a dirty
+working tree, or missing baseline README/license/workflow files. Node/TypeScript files and npm
+scripts stay visible as metadata when present without making clean non-Node repositories unhealthy.
+
+This keeps the tool useful for an agent deciding where to start without pretending to replace a full
+CI run.
 
 See [repo-health-summary-contract.md](repo-health-summary-contract.md) for the dedicated public
 output contract with field-level semantics and the current health reason strings.

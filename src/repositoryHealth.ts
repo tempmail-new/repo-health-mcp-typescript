@@ -6,6 +6,14 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 
 const GIT_STATUS_CONFLICT_PREFIXES = new Set(["DD", "AU", "UD", "UA", "DU", "AA", "UU"]);
+const EXPECTED_FILE_PATHS = [
+  "README.md",
+  "LICENSE",
+  "package.json",
+  "tsconfig.json",
+  ".github/workflows",
+] as const;
+const BASELINE_HEALTH_FILE_PATHS = new Set(["README.md", "LICENSE", ".github/workflows"]);
 
 export type HealthLevel = "ok" | "attention";
 
@@ -173,12 +181,10 @@ function countStatus(
 async function summarizeProject(root: string): Promise<RepositoryHealthSummary["project"]> {
   const packageJson = await readPackageJson(root);
   const expectedFiles = await Promise.all(
-    ["README.md", "LICENSE", "package.json", "tsconfig.json", ".github/workflows"].map(
-      async (expectedPath) => ({
-        path: expectedPath,
-        present: await pathExists(path.join(root, expectedPath)),
-      }),
-    ),
+    EXPECTED_FILE_PATHS.map(async (expectedPath) => ({
+      path: expectedPath,
+      present: await pathExists(path.join(root, expectedPath)),
+    })),
   );
 
   return {
@@ -246,14 +252,8 @@ function buildHealthReasons(
     reasons.push("git repository has no commits");
   }
 
-  for (const requiredScript of ["build", "lint", "test"]) {
-    if (!project.scripts.includes(requiredScript)) {
-      reasons.push(`missing npm script: ${requiredScript}`);
-    }
-  }
-
   for (const expectedFile of project.expectedFiles) {
-    if (!expectedFile.present) {
+    if (!expectedFile.present && BASELINE_HEALTH_FILE_PATHS.has(expectedFile.path)) {
       reasons.push(`missing expected file: ${expectedFile.path}`);
     }
   }

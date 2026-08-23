@@ -11,6 +11,36 @@ import { summarizeRepository } from "../src/repositoryHealth.js";
 const execFileAsync = promisify(execFile);
 
 describe("summarizeRepository", () => {
+  it("summarizes a clean generic repository without Node metadata as ok", async () => {
+    const repo = await createRepository();
+
+    await writeFile(path.join(repo, "README.md"), "# Example\n");
+    await writeFile(path.join(repo, "LICENSE"), "MIT\n");
+    await mkdir(path.join(repo, ".github", "workflows"), { recursive: true });
+    await writeFile(path.join(repo, ".github", "workflows", "validate.yml"), "name: validate\n");
+    await git(repo, ["add", "."]);
+    await git(repo, ["commit", "-m", "test: seed generic repository"]);
+
+    const summary = await summarizeRepository(repo);
+
+    expect(summary.project).toMatchObject({
+      name: null,
+      packageManager: null,
+      scripts: [],
+      expectedFiles: [
+        { path: "README.md", present: true },
+        { path: "LICENSE", present: true },
+        { path: "package.json", present: false },
+        { path: "tsconfig.json", present: false },
+        { path: ".github/workflows", present: true },
+      ],
+    });
+    expect(summary.health).toEqual({
+      level: "ok",
+      reasons: [],
+    });
+  });
+
   it("summarizes a clean TypeScript repository with deterministic signals", async () => {
     const repo = await createRepository();
 
@@ -60,7 +90,42 @@ describe("summarizeRepository", () => {
     });
   });
 
-  it("reports dirty working tree counts and missing validation affordances", async () => {
+  it("keeps partial npm scripts as metadata instead of health requirements", async () => {
+    const repo = await createRepository();
+
+    await writeFile(
+      path.join(repo, "package.json"),
+      JSON.stringify(
+        {
+          name: "node-service",
+          scripts: {
+            test: "vitest run",
+          },
+        },
+        null,
+        2,
+      ),
+    );
+    await writeFile(path.join(repo, "README.md"), "# Node Service\n");
+    await writeFile(path.join(repo, "LICENSE"), "MIT\n");
+    await mkdir(path.join(repo, ".github", "workflows"), { recursive: true });
+    await writeFile(path.join(repo, ".github", "workflows", "validate.yml"), "name: validate\n");
+    await git(repo, ["add", "."]);
+    await git(repo, ["commit", "-m", "test: seed node repository"]);
+
+    const summary = await summarizeRepository(repo);
+
+    expect(summary.project).toMatchObject({
+      name: "node-service",
+      scripts: ["test"],
+    });
+    expect(summary.health).toEqual({
+      level: "ok",
+      reasons: [],
+    });
+  });
+
+  it("reports dirty working tree counts and missing generic repository surfaces", async () => {
     const repo = await createRepository();
 
     await writeFile(
@@ -82,9 +147,6 @@ describe("summarizeRepository", () => {
       "git working tree has uncommitted changes",
       "missing expected file: .github/workflows",
       "missing expected file: LICENSE",
-      "missing expected file: tsconfig.json",
-      "missing npm script: build",
-      "missing npm script: lint",
     ]);
   });
 });

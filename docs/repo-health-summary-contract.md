@@ -66,45 +66,44 @@ the server process, not from the MCP client interface.
 ```
 
 `repositoryRoot`, `git.branch`, `git.head`, `project.name`, and `project.packageManager` can be
-`null` when the signal is not available. `repositoryRoot` is `null` when `checkoutPath` is not inside
-a git repository.
+`null` when the signal is not available. `project.scripts` can be empty when no `package.json` is
+present. `repositoryRoot` is `null` when `checkoutPath` is not inside a git repository.
 
 ## Field Semantics
 
-| Field                    | Semantics                                                                                             |
-| ------------------------ | ----------------------------------------------------------------------------------------------------- |
-| `schemaVersion`          | Contract version for this summary shape. Current value is `"1"`.                                      |
-| `checkoutPath`           | Resolved real path for the requested local directory.                                                 |
-| `repositoryRoot`         | Resolved git root for the checkout, or `null` outside a git repository.                               |
-| `git.isRepository`       | Whether the checkout resolves inside a git repository.                                                |
-| `git.branch`             | Current branch name, or `null` for detached or unavailable branch state.                              |
-| `git.head`               | Short 12-character commit hash, or `null` when no commit is available.                                |
-| `git.dirty`              | `true` when staged, unstaged, untracked, or conflicted counts are non-zero.                           |
-| `git.staged`             | Count of porcelain status entries with staged changes.                                                |
-| `git.unstaged`           | Count of porcelain status entries with unstaged changes.                                              |
-| `git.untracked`          | Count of untracked porcelain status entries.                                                          |
-| `git.conflicted`         | Count of porcelain status entries with merge-conflict statuses.                                       |
-| `project.name`           | `package.json` `name`, or `null` when absent or invalid.                                              |
-| `project.packageManager` | `package.json` `packageManager`, or `null` when absent or invalid.                                    |
-| `project.scripts`        | Sorted npm script names from `package.json`.                                                          |
-| `project.expectedFiles`  | Presence checks for `README.md`, `LICENSE`, `package.json`, `tsconfig.json`, and `.github/workflows`. |
-| `health.level`           | `"ok"` when there are no reasons, otherwise `"attention"`.                                            |
-| `health.reasons`         | Sorted deterministic reason strings describing missing or risky signals.                              |
+| Field                    | Semantics                                                                                  |
+| ------------------------ | ------------------------------------------------------------------------------------------ |
+| `schemaVersion`          | Contract version for this summary shape. Current value is `"1"`.                           |
+| `checkoutPath`           | Resolved real path for the requested local directory.                                      |
+| `repositoryRoot`         | Resolved git root for the checkout, or `null` outside a git repository.                    |
+| `git.isRepository`       | Whether the checkout resolves inside a git repository.                                     |
+| `git.branch`             | Current branch name, or `null` for detached or unavailable branch state.                   |
+| `git.head`               | Short 12-character commit hash, or `null` when no commit is available.                     |
+| `git.dirty`              | `true` when staged, unstaged, untracked, or conflicted counts are non-zero.                |
+| `git.staged`             | Count of porcelain status entries with staged changes.                                     |
+| `git.unstaged`           | Count of porcelain status entries with unstaged changes.                                   |
+| `git.untracked`          | Count of untracked porcelain status entries.                                               |
+| `git.conflicted`         | Count of porcelain status entries with merge-conflict statuses.                            |
+| `project.name`           | `package.json` `name`, or `null` when absent or invalid.                                   |
+| `project.packageManager` | `package.json` `packageManager`, or `null` when absent or invalid.                         |
+| `project.scripts`        | Sorted npm script names from `package.json`.                                               |
+| `project.expectedFiles`  | Presence checks for generic repository files plus optional Node/TypeScript metadata files. |
+| `health.level`           | `"ok"` when there are no reasons, otherwise `"attention"`.                                 |
+| `health.reasons`         | Sorted deterministic reason strings describing missing or risky signals.                   |
 
 ## Health Reasons
 
-The current health model reports `"attention"` when any of these reasons apply:
+The current health model reports `"attention"` for repository-generic risks. Missing
+Node/TypeScript files or npm scripts stay visible in `project`, but they do not make a clean
+non-Node repository unhealthy.
+
+Current reasons:
 
 - `path is not inside a git repository`
 - `git working tree has uncommitted changes`
 - `git repository has no commits`
-- `missing npm script: build`
-- `missing npm script: lint`
-- `missing npm script: test`
 - `missing expected file: README.md`
 - `missing expected file: LICENSE`
-- `missing expected file: package.json`
-- `missing expected file: tsconfig.json`
 - `missing expected file: .github/workflows`
 
 Reason strings are sorted before they are returned, so callers can compare summaries
