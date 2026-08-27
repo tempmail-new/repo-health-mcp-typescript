@@ -129,6 +129,27 @@ const firstSummaryQuickstart = {
   ],
 } as const;
 
+const packagedInstallQuickstart = {
+  file: "docs/packaged-install-quickstart.md",
+  link: "[docs/packaged-install-quickstart.md](docs/packaged-install-quickstart.md)",
+  supportLink: "[docs/packaged-install-quickstart.md](docs/packaged-install-quickstart.md)",
+  requiredText: [
+    "# Packaged Install Quickstart",
+    "npm ci",
+    "npm run build",
+    "PACKAGE_TARBALL=$(npm pack --silent)",
+    "npm pack --dry-run",
+    'npm install --global --prefix "$INSTALL_PREFIX" "./$PACKAGE_TARBALL"',
+    '"$INSTALL_PREFIX/bin/repo-health-mcp"',
+    '"command": "/absolute/path/to/.tmp/repo-health-mcp-install/bin/repo-health-mcp"',
+    '"args": []',
+    "repo_health_summary",
+    '"checkoutPath": "/absolute/path/to/target-repository"',
+    "[first-summary-quickstart.md](first-summary-quickstart.md)",
+    "[repo-health-summary-contract.md](repo-health-summary-contract.md)",
+  ],
+} as const;
+
 describe("project trust surfaces", () => {
   it("keeps root maintenance entry points linked from the README", async () => {
     const readme = await readFile("README.md", "utf8");
@@ -165,6 +186,23 @@ describe("first summary quickstart docs", () => {
     expect(readme).toContain(firstSummaryQuickstart.link);
 
     for (const requiredText of firstSummaryQuickstart.requiredText) {
+      expect(quickstart).toContain(requiredText);
+    }
+  });
+});
+
+describe("packaged install quickstart docs", () => {
+  it("keeps README and support navigation linked to the packed artifact install path", async () => {
+    const [readme, support, quickstart] = await Promise.all([
+      readFile("README.md", "utf8"),
+      readFile("SUPPORT.md", "utf8"),
+      readFile(packagedInstallQuickstart.file, "utf8"),
+    ]);
+
+    expect(readme).toContain(packagedInstallQuickstart.link);
+    expect(support).toContain(packagedInstallQuickstart.supportLink);
+
+    for (const requiredText of packagedInstallQuickstart.requiredText) {
       expect(quickstart).toContain(requiredText);
     }
   });
