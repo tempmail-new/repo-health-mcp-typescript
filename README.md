@@ -17,6 +17,8 @@ For the exact returned JSON shape and health semantics, see
 [docs/repo-health-summary-contract.md](docs/repo-health-summary-contract.md).
 For a shortest path from a built server to one interpreted result, see
 [docs/first-summary-quickstart.md](docs/first-summary-quickstart.md).
+For a packaged artifact proof, see
+[docs/packaged-install-quickstart.md](docs/packaged-install-quickstart.md).
 
 ## Run
 
@@ -33,6 +35,8 @@ npm run dev
 ```
 
 For MCP client configuration, see [docs/mcp-client-setup.md](docs/mcp-client-setup.md).
+For installing a packed artifact into an MCP client, see
+[docs/packaged-install-quickstart.md](docs/packaged-install-quickstart.md).
 
 ## Validation
 

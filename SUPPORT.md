@@ -7,6 +7,9 @@ Use the narrowest support path that matches the problem.
 For local setup, validation, and development commands, start with [README.md](README.md) and
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
+For release-facing install checks from a built tarball, use
+[docs/packaged-install-quickstart.md](docs/packaged-install-quickstart.md).
+
 ## Bugs
 
 Use the [bug report issue form](.github/ISSUE_TEMPLATE/bug.yml) for reproducible bugs in
