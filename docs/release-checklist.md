@@ -15,11 +15,11 @@ keep the published package, README, and MCP behavior in sync.
 ## Pre-Release
 
 1. Confirm the branch is up to date with `origin/main`.
-2. Review `README.md`, `docs/mcp-client-setup.md`, and `docs/repo-health-summary-contract.md` for
-   any release-facing drift.
+2. Review `README.md`, `CHANGELOG.md`, `docs/mcp-client-setup.md`, and
+   `docs/repo-health-summary-contract.md` for any release-facing drift.
 3. Update `package.json` and `package-lock.json` to the intended version.
-4. Add release notes that call out user-visible changes, validation performed, and any migration
-   notes.
+4. Update `CHANGELOG.md` with user-visible changes, validation performed, and any migration notes.
+5. Draft release notes from the matching `CHANGELOG.md` entry.
 
 ## Validation
 
@@ -33,8 +33,8 @@ npm run build
 npm pack --dry-run
 ```
 
-The dry-run package output should include `dist`, `README.md`, and `docs`. Do not tag a release from
-a commit that fails local validation or hosted CI.
+The dry-run package output should include `dist`, `README.md`, `CHANGELOG.md`, and `docs`. Do not tag
+a release from a commit that fails local validation or hosted CI.
 
 ## Tagging
 
@@ -45,8 +45,8 @@ git tag v0.1.1
 git push origin v0.1.1
 ```
 
-After pushing, confirm the release notes, package contents, and README links still describe the
-shipped version.
+After pushing, confirm the release notes, changelog entry, package contents, and README links still
+describe the shipped version.
 
 ## Post-Publish Install Check
 
