@@ -10,6 +10,9 @@ For local setup, validation, and development commands, start with [README.md](RE
 For release-facing install checks from a built tarball, use
 [docs/packaged-install-quickstart.md](docs/packaged-install-quickstart.md).
 
+For install checks from a published npm version or GitHub release artifact, use
+[docs/published-release-install-quickstart.md](docs/published-release-install-quickstart.md).
+
 ## Bugs
 
 Use the [bug report issue form](.github/ISSUE_TEMPLATE/bug.yml) for reproducible bugs in

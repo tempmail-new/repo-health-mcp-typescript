@@ -19,6 +19,8 @@ For a shortest path from a built server to one interpreted result, see
 [docs/first-summary-quickstart.md](docs/first-summary-quickstart.md).
 For a packaged artifact proof, see
 [docs/packaged-install-quickstart.md](docs/packaged-install-quickstart.md).
+For installing from a published npm version or GitHub release artifact, see
+[docs/published-release-install-quickstart.md](docs/published-release-install-quickstart.md).
 
 ## Run
 
@@ -37,6 +39,8 @@ npm run dev
 For MCP client configuration, see [docs/mcp-client-setup.md](docs/mcp-client-setup.md).
 For installing a packed artifact into an MCP client, see
 [docs/packaged-install-quickstart.md](docs/packaged-install-quickstart.md).
+For release consumption without a source checkout, see
+[docs/published-release-install-quickstart.md](docs/published-release-install-quickstart.md).
 
 ## Validation
 
