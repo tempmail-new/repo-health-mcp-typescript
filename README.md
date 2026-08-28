@@ -53,6 +53,7 @@ npm run build
 
 ## Project Maintenance
 
+- See [CHANGELOG.md](CHANGELOG.md) for release history and user-visible changes.
 - See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, validation order, and contribution hygiene.
 - See [docs/release-checklist.md](docs/release-checklist.md) for versioning, validation, package
   dry-run, and tagging expectations.

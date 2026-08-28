@@ -94,20 +94,40 @@ const releaseChecklist = {
     "Use a minor version for backward-compatible tool output additions or new documented MCP behavior.",
     "Use a major version for breaking changes to the `repo_health_summary` input shape, output contract,",
     "Confirm the branch is up to date with `origin/main`.",
+    "Review `README.md`, `CHANGELOG.md`, `docs/mcp-client-setup.md`, and",
     "Update `package.json` and `package-lock.json` to the intended version.",
-    "release notes that call out user-visible changes, validation performed, and any migration",
+    "Update `CHANGELOG.md` with user-visible changes, validation performed, and any migration notes.",
+    "Draft release notes from the matching `CHANGELOG.md` entry.",
     "npm run fmt:check",
     "npm run lint",
     "npm test",
     "npm run build",
     "npm pack --dry-run",
-    "The dry-run package output should include `dist`, `README.md`, and `docs`.",
+    "The dry-run package output should include `dist`, `README.md`, `CHANGELOG.md`, and `docs`.",
     "## Post-Publish Install Check",
     "upload the packed npm `.tgz` artifact, not only source",
     'npm install --global --prefix "$INSTALL_PREFIX" repo-health-mcp-typescript@<version>',
     'npm install --global --prefix "$INSTALL_PREFIX" ./repo-health-mcp-typescript-<version>.tgz',
     "Create tags only from the validated `main` commit:",
     "git tag v0.1.1",
+  ],
+} as const;
+
+const changelog = {
+  file: "CHANGELOG.md",
+  link: "[CHANGELOG.md](CHANGELOG.md)",
+  requiredText: [
+    "# Changelog",
+    "Release history for `repo-health-mcp-typescript`.",
+    "## Unreleased",
+    "Add this first-class release history surface, README navigation, release-checklist guidance, and",
+    "## 0.1.0 - Initial Public Baseline",
+    "deterministic `repo_health_summary` tool",
+    "output contract, MCP client setup, first-summary path, packaged install flow, and",
+    "published artifact install flow",
+    "contributor, security, support, bug-report, and health-signal proposal surfaces",
+    "Package the built `repo-health-mcp` executable with `dist`, `README.md`, and `docs`",
+    "Keep clean non-Node repositories from being marked unhealthy",
   ],
 } as const;
 
@@ -190,15 +210,34 @@ describe("project trust surfaces", () => {
 
 describe("release checklist docs", () => {
   it("keeps the README linked to versioning and package validation expectations", async () => {
-    const [readme, checklist] = await Promise.all([
+    const [readme, checklist, packageManifest] = await Promise.all([
       readFile("README.md", "utf8"),
       readFile(releaseChecklist.file, "utf8"),
+      readFile("package.json", "utf8"),
     ]);
 
     expect(readme).toContain(releaseChecklist.link);
+    expect(packageManifest).toContain('"CHANGELOG.md"');
 
     for (const requiredText of releaseChecklist.requiredText) {
       expect(checklist).toContain(requiredText);
+    }
+  });
+});
+
+describe("changelog docs", () => {
+  it("keeps release history linked from README and release guidance", async () => {
+    const [readme, checklist, history] = await Promise.all([
+      readFile("README.md", "utf8"),
+      readFile(releaseChecklist.file, "utf8"),
+      readFile(changelog.file, "utf8"),
+    ]);
+
+    expect(readme).toContain(changelog.link);
+    expect(checklist).toContain("CHANGELOG.md");
+
+    for (const requiredText of changelog.requiredText) {
+      expect(history).toContain(requiredText);
     }
   });
 });
