@@ -102,6 +102,10 @@ const releaseChecklist = {
     "npm run build",
     "npm pack --dry-run",
     "The dry-run package output should include `dist`, `README.md`, and `docs`.",
+    "## Post-Publish Install Check",
+    "upload the packed npm `.tgz` artifact, not only source",
+    'npm install --global --prefix "$INSTALL_PREFIX" repo-health-mcp-typescript@<version>',
+    'npm install --global --prefix "$INSTALL_PREFIX" ./repo-health-mcp-typescript-<version>.tgz',
     "Create tags only from the validated `main` commit:",
     "git tag v0.1.1",
   ],
@@ -147,6 +151,29 @@ const packagedInstallQuickstart = {
     '"checkoutPath": "/absolute/path/to/target-repository"',
     "[first-summary-quickstart.md](first-summary-quickstart.md)",
     "[repo-health-summary-contract.md](repo-health-summary-contract.md)",
+  ],
+} as const;
+
+const publishedReleaseInstallQuickstart = {
+  file: "docs/published-release-install-quickstart.md",
+  link: "[docs/published-release-install-quickstart.md](docs/published-release-install-quickstart.md)",
+  supportLink:
+    "[docs/published-release-install-quickstart.md](docs/published-release-install-quickstart.md)",
+  requiredText: [
+    "# Published Release Install Quickstart",
+    "npm view repo-health-mcp-typescript@0.1.0 version",
+    "https://github.com/tempmail-new/repo-health-mcp-typescript/releases/download/v0.1.0/repo-health-mcp-typescript-0.1.0.tgz",
+    "[packaged-install-quickstart.md](packaged-install-quickstart.md)",
+    'npm install --global --prefix "$INSTALL_PREFIX" repo-health-mcp-typescript@0.1.0',
+    'npm install --global --prefix "$INSTALL_PREFIX" ./repo-health-mcp-typescript-0.1.0.tgz',
+    '"$INSTALL_PREFIX/bin/repo-health-mcp"',
+    '"command": "/home/you/.local/repo-health-mcp/bin/repo-health-mcp"',
+    '"args": []',
+    "repo_health_summary",
+    '"checkoutPath": "/absolute/path/to/target-repository"',
+    "version satisfies `>=22.12.0`",
+    "[first-summary-quickstart.md](first-summary-quickstart.md)",
+    "[release-checklist.md](release-checklist.md)",
   ],
 } as const;
 
@@ -203,6 +230,23 @@ describe("packaged install quickstart docs", () => {
     expect(support).toContain(packagedInstallQuickstart.supportLink);
 
     for (const requiredText of packagedInstallQuickstart.requiredText) {
+      expect(quickstart).toContain(requiredText);
+    }
+  });
+});
+
+describe("published release install quickstart docs", () => {
+  it("keeps README and support navigation linked to published artifact install paths", async () => {
+    const [readme, support, quickstart] = await Promise.all([
+      readFile("README.md", "utf8"),
+      readFile("SUPPORT.md", "utf8"),
+      readFile(publishedReleaseInstallQuickstart.file, "utf8"),
+    ]);
+
+    expect(readme).toContain(publishedReleaseInstallQuickstart.link);
+    expect(support).toContain(publishedReleaseInstallQuickstart.supportLink);
+
+    for (const requiredText of publishedReleaseInstallQuickstart.requiredText) {
       expect(quickstart).toContain(requiredText);
     }
   });

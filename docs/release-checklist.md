@@ -47,3 +47,10 @@ git push origin v0.1.1
 
 After pushing, confirm the release notes, package contents, and README links still describe the
 shipped version.
+
+## Post-Publish Install Check
+
+If publishing GitHub release assets, upload the packed npm `.tgz` artifact, not only source
+archives. After publishing, verify either
+`npm install --global --prefix "$INSTALL_PREFIX" repo-health-mcp-typescript@<version>` or
+`npm install --global --prefix "$INSTALL_PREFIX" ./repo-health-mcp-typescript-<version>.tgz`.
