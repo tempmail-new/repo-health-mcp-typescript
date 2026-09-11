@@ -7,6 +7,8 @@ tagging a release.
 
 - Add this first-class release history surface, README navigation, release-checklist guidance, and
   deterministic docs regression coverage.
+- Refresh transitive production dependencies so `npm audit --omit=dev --audit-level=high` reports
+  no vulnerabilities on the published lockfile.
 
 ## 0.1.0 - Initial Public Baseline
 
